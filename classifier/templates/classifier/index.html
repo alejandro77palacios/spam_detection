@@ -1,13 +1,31 @@
-{% load static %}
-
-<link rel="stylesheet" href="{% static 'classifier/style.css' %}">
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'classifier/style.css' %}">
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
-<h2>Hi!</h2>
+<div class="container">
+    <h2>Making predictions</h2>
+
+    Please enter your SMS below and click the Predict button.
+
+    <form action="{% url 'classifier:predict' %}" method="post">
+        {% csrf_token %}
+        <input type="text" name="input" placeholder="Enter your SMS">
+        <input type="submit" value="Predict">
+    </form>
+
+    {% if prediction %}
+        <p>The SMS is:</p>
+        <div class="prediction">
+            <blockquote>{{ sms }}.</blockquote>
+            <p>The predicted label is <b>{{ prediction }}</b>.</p>
+            <p>The model is <b>{{ probability }}</b> sure.</p>
+        </div>
+    {% endif %}
+</div>
 </body>
 </html>
