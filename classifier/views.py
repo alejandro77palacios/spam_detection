@@ -1,5 +1,6 @@
 from django.http import HttpResponse
+from django.shortcuts import render
 
 
 def index(request):
-    return HttpResponse("Hello, you're at the classifier index.")
+    return render(request, 'classifier/index.html')
