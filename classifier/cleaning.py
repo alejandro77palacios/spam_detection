@@ -29,7 +29,7 @@ class NlpDF(pd.DataFrame):
 
     def compute_pos_counts(self):
         self['total_nouns'] = self['pos'].apply(lambda x: x.count('NOUN'))
-        self['total_proper_nouns'] = sms['pos'].apply(lambda x: x.count('PROPN'))
+        self['total_proper_nouns'] = self['pos'].apply(lambda x: x.count('PROPN'))
 
     def compute_nlp_features(self):
         self.create_doc()
@@ -37,4 +37,4 @@ class NlpDF(pd.DataFrame):
         self.compute_pos_counts()
 
 
-sms = NlpDF(Message.objects.all().values('text', 'label'))
+# sms = NlpDF(Message.objects.all().values('text', 'label'))
