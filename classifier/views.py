@@ -3,7 +3,7 @@ import pickle
 from django.conf import settings
 from django.shortcuts import render
 
-estimator_path = settings.BASE_DIR / 'classifier' / 'nlp_model.pkl'
+estimator_path = settings.BASE_DIR / 'classifier' / 'estimator.pkl'
 
 with open(estimator_path, 'rb') as f:
     classifier = pickle.load(f)
