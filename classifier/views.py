@@ -1,7 +1,12 @@
 import pickle
+from typing import Any
 
+import pandas as pd
 from django.conf import settings
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from pandas import DataFrame
+
+from classifier.forms import UploadFileForm
 
 estimator_path = settings.BASE_DIR / 'classifier' / 'estimator.pkl'
 
@@ -22,3 +27,36 @@ def index(request):
                    'probability': probability,
                    'sms': sms}
         return render(request, 'classifier/index.html', context)
+
+
+def process_file(request):
+    if request.method == 'POST':
+        form = UploadFileForm(request.POST, request.FILES)
+        if form.is_valid():
+            file = request.FILES['file']
+            if file.name.endswith('.csv') or file.name.endswith('.xlsx'):
+                df = predict_csv(file)
+                result_path = settings.BASE_DIR / 'classifier' / 'results' / f'{file.name[:-4]}_result.csv'
+                df.to_csv(result_path, index=False)
+                #return redirect('classifier:process_file')
+                print(result_path.resolve())
+                return render(request, 'classifier/uploading_files.html', {'form': form, 'result_file': result_path.resolve()})
+            return redirect('classifier:process_file')
+        else:
+            print('invalid')
+    else:
+        form = UploadFileForm()
+    return render(request, 'classifier/uploading_files.html', {'form': form})
+
+
+def predict_csv(file):
+    """This function takes in a csv file and predict the labels for each row and return a new csv file with the result"""
+    df = pd.read_csv(file, header=None, names=['text'])
+    df['predicted_label'] = classifier.predict(df['text'])
+    df['predicted_label'].replace({0: 'Ham', 1: 'Spam'}, inplace=True)
+    df['probability_spam'] = classifier.predict_proba(df['text'])[:, 1]
+    print(classifier.predict_proba(df['text'])[:, 1])
+    print(df.head())
+
+    print('hadaf')
+    return df

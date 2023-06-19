@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<p>If you prefer, you can also upload a file with several sms. Only csv and xlsx (excel) are allowed</p>
+<form action="{% url 'classifier:process_file' %}"  method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.file }}
+    <button type="submit">Upload</button>
+</form>
+
+{% if result_file %}
+    <p>Your file is ready!</p>
+    <a href="{{ result_file }}" download="{{ result_file }}">Download result file</a>
+{% endif %}
+
+</body>
+</html>

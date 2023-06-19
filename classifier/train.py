@@ -11,6 +11,8 @@ from classifier.cleaning import NlpDF
 
 
 class NlpModel():
+    random_seed = 1
+
     def __init__(self, nlp_df: NlpDF):
         self.nlp_df = nlp_df
         self.features = nlp_df['text']
@@ -29,7 +31,8 @@ class NlpModel():
     def train_test_split(self):
         self.X_train, self.X_test, self.y_train, self.y_test = train_test_split(self.X,
                                                                                 self.y,
-                                                                                stratify=self.y)
+                                                                                stratify=self.y,
+                                                                                random_state=self.random_seed)
 
     def fit(self):
         self.estimator.fit(self.X_train, self.y_train)

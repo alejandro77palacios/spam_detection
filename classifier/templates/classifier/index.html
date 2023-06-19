@@ -19,8 +19,8 @@
     </form>
 
     {% if prediction %}
-        <p>The SMS is:</p>
         <div class="prediction">
+            <p>The SMS is:</p>
             <blockquote>{{ sms }}.</blockquote>
             <p>The predicted label is <b>{{ prediction }}</b>.</p>
             <p>The model is <b>{{ probability }}</b> sure.</p>
