@@ -1,6 +1,6 @@
-from classifier.cleaning import NlpDF
+from classifier.machine_learning.cleaning import NlpDF
 from classifier.models import Message
-from classifier.train import NlpModel
+from classifier.machine_learning.train import NlpModel
 
 sms = NlpDF(Message.objects.all().values('text', 'label'))
 nlp_model = NlpModel(sms)

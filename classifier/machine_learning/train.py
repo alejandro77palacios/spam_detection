@@ -7,7 +7,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.pipeline import make_pipeline
 
-from classifier.cleaning import NlpDF
+from classifier.machine_learning.cleaning import NlpDF
 
 
 class NlpModel():
