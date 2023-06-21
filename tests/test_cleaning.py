@@ -1,6 +1,6 @@
 import pytest
 
-from classifier.cleaning import NlpDF
+from classifier.machine_learning.cleaning import NlpDF
 
 
 @pytest.fixture
@@ -49,12 +49,14 @@ def test_compute_pos(nlp_df):
     assert pos[0] == ['PROPN', 'ADJ', 'NOUN', 'PUNCT']
     assert pos[1] == ['PRON', 'VERB', 'NOUN', 'NOUN']
 
+
 def test_compute_pos_counts(nlp_df):
     nlp_df.create_doc()
     nlp_df.compute_pos()
     nlp_df.compute_pos_counts()
     assert nlp_df['total_nouns'].tolist() == [1, 2]
     assert nlp_df['total_proper_nouns'].tolist() == [1, 0]
+
 
 def test_compute_nlp_features(nlp_df):
     nlp_df.compute_nlp_features()

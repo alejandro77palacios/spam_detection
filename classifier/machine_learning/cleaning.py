@@ -2,8 +2,6 @@ import numpy as np
 import pandas as pd
 import spacy
 
-from .models import Message
-
 
 class NlpDF(pd.DataFrame):
     nlp = spacy.load('en_core_web_sm')
@@ -35,6 +33,3 @@ class NlpDF(pd.DataFrame):
         self.create_doc()
         self.compute_pos()
         self.compute_pos_counts()
-
-
-# sms = NlpDF(Message.objects.all().values('text', 'label'))
