@@ -1,14 +1,13 @@
 import pickle
-from typing import Any
 
 import pandas as pd
 from django.conf import settings
 from django.shortcuts import render, redirect
-from pandas import DataFrame
 
 from classifier.forms import UploadFileForm
 
-estimator_path = settings.BASE_DIR / 'classifier' / 'estimator.pkl'
+app_path = settings.BASE_DIR / 'classifier'
+estimator_path = app_path / 'estimator.pkl'
 
 with open(estimator_path, 'rb') as f:
     classifier = pickle.load(f)
@@ -38,9 +37,8 @@ def process_file(request):
                 df = predict_csv(file)
                 result_path = settings.BASE_DIR / 'classifier' / 'results' / f'{file.name[:-4]}_result.csv'
                 df.to_csv(result_path, index=False)
-                #return redirect('classifier:process_file')
                 print(result_path.resolve())
-                return render(request, 'classifier/uploading_files.html', {'form': form, 'result_file': result_path.resolve()})
+                return download_file(request, result_path)
             return redirect('classifier:process_file')
         else:
             print('invalid')
@@ -60,3 +58,12 @@ def predict_csv(file):
 
     print('hadaf')
     return df
+
+
+from django.http import FileResponse
+
+
+def download_file(request, file_path):
+    response = FileResponse(open(file_path, 'rb'), content_type='text/plain')
+    response['Content-Disposition'] = f'attachment; filename="{file_path.name}"'
+    return response
